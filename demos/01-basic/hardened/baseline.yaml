@@ -1,0 +1,132 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: secure-zone
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+    app.kubernetes.io/managed-by: bastionkit
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: secure-zone
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-egress
+  namespace: secure-zone
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector: {}
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: baseline-quota
+  namespace: secure-zone
+spec:
+  hard:
+    requests.cpu: 4
+    requests.memory: 8Gi
+    limits.cpu: 4
+    limits.memory: 8Gi
+    pods: 50
+    count/services.loadbalancers: 0
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: baseline-limits
+  namespace: secure-zone
+spec:
+  limits:
+  - type: Container
+    default:
+      cpu: 500m
+      memory: 512Mi
+    defaultRequest:
+      cpu: 100m
+      memory: 128Mi
+    max:
+      cpu: 2
+      memory: 2Gi
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: baseline-sa
+  namespace: secure-zone
+automountServiceAccountToken: false
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: baseline-readonly
+  namespace: secure-zone
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - configmaps
+  - services
+  - endpoints
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: baseline-readonly-binding
+  namespace: secure-zone
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: baseline-readonly
+subjects:
+- kind: ServiceAccount
+  name: baseline-sa
+  namespace: secure-zone
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: baseline-deny-privileged
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+    - apiGroups:
+      - ""
+      apiVersions:
+      - v1
+      operations:
+      - CREATE
+      - UPDATE
+      resources:
+      - pods
+  validations:
+  - expression: "!object.spec.containers.exists(c, has(c.securityContext) && c.securityContext.privileged == true)"
+    message: privileged containers are denied by the bastionkit baseline
