@@ -17,6 +17,30 @@ CI-friendly, and self-hostable: point it at your manifests, get prioritized
 findings in the format your workflow already speaks (table, JSON, SARIF), and
 scaffold a ready-to-apply baseline bundle for any namespace.
 
+## Usage — step by step
+
+1. **Install** from source (Python 3.9+):
+   ```bash
+   pip install .
+   ```
+2. **Assess** k8s manifests against the hardened baseline:
+   ```bash
+   bastionkit assess manifests/ --namespace prod
+   ```
+3. **Inspect** the baseline controls bastionkit enforces:
+   ```bash
+   bastionkit baseline
+   ```
+4. **Use the output**: emit SARIF or JSON and gate on severity in CI:
+   ```bash
+   bastionkit assess manifests/ --format sarif --fail-on high --out bastion.sarif
+   ```
+5. **Generate** a hardened baseline bundle to scaffold a namespace:
+   ```bash
+   bastionkit generate --namespace prod --cpu-quota 4 --memory-quota 8Gi --pod-quota 50 --out baseline.yaml
+   ```
+   Also: `bastionkit mcp` (MCP stdio server).
+
 ## What it checks
 
 `bastionkit` evaluates a baseline of controls drawn (by concept) from public
