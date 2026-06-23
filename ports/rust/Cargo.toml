@@ -1,0 +1,13 @@
+[package]
+name = "bastionkit"
+version = "0.1.1"
+edition = "2021"
+description = "Hardened security baseline for air-gapped/regulated Kubernetes (Rust port)"
+license = "LicenseRef-COCL-1.0"
+
+[[bin]]
+name = "bastionkit"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 2
