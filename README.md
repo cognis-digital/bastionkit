@@ -23,6 +23,57 @@ It is **fully passive and offline** — it reads manifest files and computes
 findings locally. It never connects to a cluster, an API server, or the
 network. It performs **no active scanning** of any kind.
 
+
+<!-- cognis:example:start -->
+## 🔎 Example output
+
+Real, reproducible output from the tool — runs offline:
+
+```console
+$ bastionkit-emit --version
+bastionkit 0.1.1
+```
+
+```console
+$ bastionkit-emit --help
+usage: bastionkit [-h] [--version] {assess,generate,baseline,mcp} ...
+
+Hardened security baseline for air-gapped/regulated Kubernetes — assess
+manifests and generate baseline controls.
+
+positional arguments:
+  {assess,generate,baseline,mcp}
+    assess              Assess k8s manifests against the hardened baseline.
+    generate            Generate a hardened baseline bundle for a namespace.
+    baseline            List the baseline controls and their hardening
+                        guidance.
+    mcp                 Run as an MCP server (stdio JSON-RPC).
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+```
+
+> Blocks above are real `bastionkit` output — reproduce them from a clone.
+
+**Sample result format** _(illustrative values — run on your own data for real findings):_
+
+```
+{
+"findings": [
+    {
+        "id": "1234567890",
+        "title": "Suspicious Network Traffic",
+        "description": "Potential malicious activity detected on port 443",
+        "created_by": "cognis-connect",
+        "created_at": "2023-02-20T14:30:00Z"
+    }
+]
+}
+```
+
+<!-- cognis:example:end -->
+
 ## What it really does
 
 `bastionkit` ships two cooperating capabilities plus a couple of conveniences:

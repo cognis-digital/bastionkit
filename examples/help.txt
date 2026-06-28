@@ -1,0 +1,18 @@
+$ bastionkit-emit --help
+
+usage: bastionkit [-h] [--version] {assess,generate,baseline,mcp} ...
+
+Hardened security baseline for air-gapped/regulated Kubernetes — assess
+manifests and generate baseline controls.
+
+positional arguments:
+  {assess,generate,baseline,mcp}
+    assess              Assess k8s manifests against the hardened baseline.
+    generate            Generate a hardened baseline bundle for a namespace.
+    baseline            List the baseline controls and their hardening
+                        guidance.
+    mcp                 Run as an MCP server (stdio JSON-RPC).
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
