@@ -28,3 +28,5 @@
 [2026-07-12 19:26:48] === enhance · bastionkit · words=120000 loc>=10000 langs=9 push=True ===
 [2026-07-12 19:27:21] === done · bastionkit · loc=10019 · {'committed': True, 'pushed': False, 'push_err': "fatal: unable to access 'https://github.com/cognis-digital/bastionkit.git/': HTTP/2 stream 1 was not closed cleanly before end of the underlying stream"} ===
 [2026-07-12 19:27:24] === enhance · bastionkit · words=120000 loc>=10000 langs=9 push=True ===
+[2026-07-12 19:27:40] === done · bastionkit · loc=10019 · {'committed': True, 'pushed': False, 'push_err': "fatal: unable to access 'https://github.com/cognis-digital/bastionkit.git/': Could not resolve host: github.com"} ===
+[2026-07-12 19:29:29] === enhance · bastionkit · words=120000 loc>=10000 langs=9 push=True ===
