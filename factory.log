@@ -16,3 +16,5 @@
 [2026-07-12 19:20:45]   +polyglot/rust/pod_security_scanner.rs  (loc now ~10019)
 [2026-07-12 19:21:10] === done · bastionkit · loc=10019 · {'committed': True, 'pushed': False, 'push_err': "fatal: unable to access 'https://github.com/cognis-digital/bastionkit.git/': Failed to connect to github.com port 443 after 24111 ms: Timed out"} ===
 [2026-07-12 19:22:14] === enhance · bastionkit · words=120000 loc>=10000 langs=9 push=True ===
+[2026-07-12 19:22:30] === done · bastionkit · loc=10019 · {'committed': True, 'pushed': False, 'push_err': "fatal: unable to access 'https://github.com/cognis-digital/bastionkit.git/': Could not resolve host: github.com"} ===
+[2026-07-12 19:23:34] === enhance · bastionkit · words=120000 loc>=10000 langs=9 push=True ===
